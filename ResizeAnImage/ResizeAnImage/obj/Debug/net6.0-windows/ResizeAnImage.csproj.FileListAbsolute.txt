@@ -15,3 +15,20 @@ D:\Lections\4.2 -\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\refint\Re
 D:\Lections\4.2 -\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.pdb
 D:\Lections\4.2 -\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.genruntimeconfig.cache
 D:\Lections\4.2 -\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ref\ResizeAnImage.dll
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\bin\Debug\net6.0-windows\ResizeAnImage.exe
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\bin\Debug\net6.0-windows\ResizeAnImage.deps.json
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\bin\Debug\net6.0-windows\ResizeAnImage.runtimeconfig.json
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\bin\Debug\net6.0-windows\ResizeAnImage.dll
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\bin\Debug\net6.0-windows\ResizeAnImage.pdb
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.csproj.AssemblyReference.cache
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.Form1.resources
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.csproj.GenerateResource.cache
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.GeneratedMSBuildEditorConfig.editorconfig
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.AssemblyInfoInputs.cache
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.AssemblyInfo.cs
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.csproj.CoreCompileInputs.cache
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.dll
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\refint\ResizeAnImage.dll
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.pdb
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ResizeAnImage.genruntimeconfig.cache
+D:\Lections\4.2 -Paralel programing\Image-Downsizer\ResizeAnImage\ResizeAnImage\obj\Debug\net6.0-windows\ref\ResizeAnImage.dll

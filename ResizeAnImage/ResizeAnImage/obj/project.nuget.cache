@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "++mNsT7NYgfvQaEBda7fQ2oq3r2VZuWXPzBuuybVITzd8c9eeiOlErjpawGuI/NGo7/+2QpQU7hopVxItPqRJw==",
+  "dgSpecHash": "5iL4OvBxNgt1UicT6ohwXolMXgVaL3nMN3VlqSfHdd2DL8vgxIUQip7yBKM96IcorIeUvQwTkf1SibUWRMNZuw==",
   "success": true,
-  "projectFilePath": "D:\\Lections\\4.2 -\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj",
+  "projectFilePath": "D:\\Lections\\4.2 -Paralel programing\\Image-Downsizer\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

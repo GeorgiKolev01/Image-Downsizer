@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Lections\\4.2 -\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj": {}
+    "D:\\Lections\\4.2 -Paralel programing\\Image-Downsizer\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj": {}
   },
   "projects": {
-    "D:\\Lections\\4.2 -\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj": {
+    "D:\\Lections\\4.2 -Paralel programing\\Image-Downsizer\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Lections\\4.2 -\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj",
+        "projectUniqueName": "D:\\Lections\\4.2 -Paralel programing\\Image-Downsizer\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj",
         "projectName": "ResizeAnImage",
-        "projectPath": "D:\\Lections\\4.2 -\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj",
+        "projectPath": "D:\\Lections\\4.2 -Paralel programing\\Image-Downsizer\\ResizeAnImage\\ResizeAnImage\\ResizeAnImage.csproj",
         "packagesPath": "C:\\Users\\georg\\.nuget\\packages\\",
-        "outputPath": "D:\\Lections\\4.2 -\\ResizeAnImage\\ResizeAnImage\\obj\\",
+        "outputPath": "D:\\Lections\\4.2 -Paralel programing\\Image-Downsizer\\ResizeAnImage\\ResizeAnImage\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
