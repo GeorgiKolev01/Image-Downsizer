@@ -13,7 +13,7 @@ namespace ResizeAnImage
         string pathOfImage = "";
 
        
-        static void getDecimalRGB(int[,] pixelsArray, Bitmap image)
+        static void getDecimalRGB(long[,] pixelsArray, Bitmap image)
         {
             const int PixelWidth = 3;
             const PixelFormat PixelFormat = PixelFormat.Format24bppRgb;
@@ -41,7 +41,7 @@ namespace ResizeAnImage
             }
         }
 
-        public void MinifyArray(int[,] mimimisedArray, int[,] pixelsArray, int height, int width, int pixelHeight, int pixelWidth)
+        public void MinifyArray(long[,] mimimisedArray, long[,] pixelsArray, int height, int width, int pixelHeight, int pixelWidth)
         {
             double percentage = double.Parse(textBox2.Text) / 100;
             double divisionCount = (double)(1 / percentage);
@@ -67,11 +67,11 @@ namespace ResizeAnImage
                         
                         }
                     }
-                    avgBlue = (int)(avgBlue / (int)(Math.Pow(Math.Floor(divisionCount),2)));
-                    avgGreen = (int)(avgGreen / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
-                    avgRed = (int)(avgRed / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
+                    avgBlue = (long)(avgBlue / (int)(Math.Pow(Math.Floor(divisionCount),2)));
+                    avgGreen = (long)(avgGreen / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
+                    avgRed = (long)(avgRed / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
 
-                    mimimisedArray[i,j] = (int)((avgRed*256+avgGreen)*256+avgBlue);
+                    mimimisedArray[i,j] = (long)((avgRed*256+avgGreen)*256+avgBlue);
                     avgBlue = 0;
                     avgGreen = 0;
                     avgRed = 0;
@@ -136,12 +136,11 @@ namespace ResizeAnImage
             //createPicture(pixelsArray, foo.Width, foo.Height);
             //MinifyArray(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth,height, width);
             //createPicture(mimimisedArray, minimisedWidth, minimisedHeight);
-            MinifyAAAArray(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth, height, width);
+            //MinifyAAAArray(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth, height, width);
             //createAAAPicture(mimimisedArray, minimisedWidth, minimisedHeight);
+            MinifyAArray(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth, height, width);
             SaveProcessedBitmap(mimimisedArray, minimisedWidth, minimisedHeight);
-            textBox1.Text = a;
         }
-        static string a = "";
         static void getDecimalARGB(long[,] pixelsArray, Bitmap image)
         {
             const int PixelWidth = 4;
@@ -161,7 +160,6 @@ namespace ResizeAnImage
                         int green = pixelData[offset + 1];
                         int red = pixelData[offset + 2];
                         int alpha = pixelData[offset + 3];
-                        a = alpha.ToString();
                         long color = (alpha << 24) | (red << 16) | (green << 8) | blue;
 
                         pixelsArray[scanline, pixeloffset] = color;
@@ -205,7 +203,7 @@ namespace ResizeAnImage
                     avgBlue = (int)(avgBlue / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
                     avgGreen = (int)(avgGreen / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
                     avgRed = (int)(avgRed / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
-                    avgAlfa = (int)(avgAlfa / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
+                    avgAlfa = (int)(avgAlfa / (int)(Math.Pow((divisionCount), 2)));
 
                     mimimisedArray[i, j] = (long)(((avgAlfa * 256 + avgRed) * 256 + avgGreen) * 256 + avgBlue);
                     avgAlfa = 0;
@@ -247,5 +245,47 @@ namespace ResizeAnImage
             newImage.UnlockBits(bitmapData);
             newImage.Save(@"D:\MyImage.png", ImageFormat.Png);
         }
+        public void MinifyAArray(long[,] mimimisedArray, long[,] pixelsArray, int height, int width, int pixelHeight, int pixelWidth)
+        {
+            double percentage = double.Parse(textBox2.Text) / 100;
+            int divisionCountHeight = (int)Math.Ceiling((double)pixelHeight / (double)height);
+            int divisionCountWidth = (int)Math.Ceiling((double)pixelWidth / (double)width);
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    decimal avgAlfa = 0;
+                    decimal avgRed = 0;
+                    decimal avgGreen = 0;
+                    decimal avgBlue = 0;
+
+                    for (int k = i * divisionCountHeight; k < (i + 1) * divisionCountHeight; k++)
+                    {
+                        for (int l = j * divisionCountWidth; l < (j + 1) * divisionCountWidth; l++)
+                        {
+                            if (k < pixelHeight && l < pixelWidth)
+                            {
+                                long color = pixelsArray[k, l];
+                                avgBlue += (int)(color & 0xFF);
+                                avgGreen += (int)((color >> 8) & 0xFF);
+                                avgRed += (int)((color >> 16) & 0xFF);
+                                avgAlfa += (int)((color >> 24) & 0xFF);
+                            }
+                        }
+                    }
+
+                    int segmentPixelCount = divisionCountHeight * divisionCountWidth;
+                    avgBlue /= segmentPixelCount;
+                    avgGreen /= segmentPixelCount;
+                    avgRed /= segmentPixelCount;
+                    avgAlfa /= segmentPixelCount;
+
+                    long newColor = ((long)avgAlfa << 24) | ((long)avgRed << 16) | ((long)avgGreen << 8) | (long)avgBlue;
+                    mimimisedArray[i, j] = newColor;
+                }
+            }
+        }
+
     }
 }
