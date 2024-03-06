@@ -9,9 +9,16 @@ namespace ResizeAnImage
         {
             InitializeComponent();
         }
+        int workersCount = Environment.ProcessorCount;
 
-        string pathOfImage = "";
-
+        static string pathOfImage = "";
+        static Bitmap image;
+        static int height;
+        static int width;
+        static long[,,] pixelsArray;
+        static int minimisedHeight;
+        static int minimisedWidth;
+        static long[,,] minimisedArray;
         private void buttonImageSelect_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
@@ -30,24 +37,27 @@ namespace ResizeAnImage
             {
                 textBox1.Text = "You didn't select an image!";
             }
-            buttonGenerate.Enabled = true;
+            buttonSaveFunctionalWay.Enabled = true;
+            buttonSaveThreadsWay.Enabled = true;
         }
 
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
-            Bitmap foo = Bitmap.FromFile(pathOfImage) as Bitmap;
-            int height = foo.Height;
-            int width = foo.Width;
-            long[,,] pixelsArray = new long[height, width,4];
-            getDecimalARGBThreeDimensions(pixelsArray, foo);
-            int minimisedHeight = height * int.Parse(textBox2.Text) / 100;
-            int minimisedWidth = width * int.Parse(textBox2.Text) / 100;
-            long[,,] mimimisedArray = new long[minimisedHeight, minimisedWidth,4];
-            MinifyArrayThreeDimensions(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth, height, width);
-            SaveProcessedBitmapThreeDimensions(mimimisedArray, minimisedWidth, minimisedHeight);
+            DateTime start = DateTime.Now;
+            image = Bitmap.FromFile(pathOfImage) as Bitmap;
+            height = image.Height;
+            width = image.Width;
+            pixelsArray = new long[height, width,4];
+            minimisedHeight = height * int.Parse(textBox2.Text) / 100;
+            minimisedWidth = width * int.Parse(textBox2.Text) / 100;
+            minimisedArray = new long[minimisedHeight, minimisedWidth, 4];
+            getDecimalARGBThreeDimensions();
+            MinifyArrayThreeDimensions();
+            SaveProcessedBitmapThreeDimensions();
+            calculationTimeTxt.Text = (DateTime.Now - start).TotalSeconds.ToString();
         }
 
-        static void getDecimalARGBThreeDimensions(long[,,] pixelsArray, Bitmap image)
+        static void getDecimalARGBThreeDimensions()
         {
             const int PixelWidth = 4;
             const PixelFormat PixelFormat = PixelFormat.Format32bppArgb;
@@ -76,58 +86,112 @@ namespace ResizeAnImage
 
         }
 
-        public void MinifyArrayThreeDimensions(long[,,] mimimisedArray, long[,,] pixelsArray, int height, int width, int pixelHeight, int pixelWidth)
+        public void MinifyArrayThreeDimensions()
         {
             double percentage = double.Parse(textBox2.Text) / 100;
             double divisionCount = (double)(1 / percentage);
 
-            for (int i = 0; i < height; i++)
+            for (int i = 0; i < minimisedHeight; i++)
             {
-                for (int j = 0; j < width; j++)
+                for (int j = 0; j < minimisedWidth; j++)
                 {
                     for (double k = i * divisionCount; k <= (i + 1) * divisionCount - 1; k++)
                     {
                         for (double l = j * divisionCount; l <= (j + 1) * divisionCount - 1; l++)
                         {
-                            mimimisedArray[i, j, 3] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 3];
-                            mimimisedArray[i, j, 2] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 2];
-                            mimimisedArray[i, j, 1] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 1];
-                            mimimisedArray[i, j, 0] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 0];
+                            minimisedArray[i, j, 3] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 3];
+                            minimisedArray[i, j, 2] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 2];
+                            minimisedArray[i, j, 1] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 1];
+                            minimisedArray[i, j, 0] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 0];
                         }
                     }
-                    mimimisedArray[i, j, 3] /= (int)(Math.Pow(Math.Floor(divisionCount), 2));
-                    mimimisedArray[i, j, 2] /= (int)(Math.Pow(Math.Floor(divisionCount), 2));
-                    mimimisedArray[i, j, 1] /= (int)(Math.Pow(Math.Floor(divisionCount), 2));
-                    mimimisedArray[i, j, 0] /= (int)(Math.Pow((divisionCount), 2));
+                    minimisedArray[i, j, 3] /= (int)(Math.Pow(Math.Floor(divisionCount), 2));
+                    minimisedArray[i, j, 2] /= (int)(Math.Pow(Math.Floor(divisionCount), 2));
+                    minimisedArray[i, j, 1] /= (int)(Math.Pow(Math.Floor(divisionCount), 2));
+                    minimisedArray[i, j, 0] /= (int)(Math.Pow((divisionCount), 2));
                 }
             }
 
         }
 
-        private void SaveProcessedBitmapThreeDimensions(long[,,] pixelsArray, int width, int height)
+        private void SaveProcessedBitmapThreeDimensions()
         {
-            byte[] imageData = new byte[width * height * 4];
+            byte[] imageData = new byte[minimisedWidth * minimisedHeight * 4];
 
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < minimisedHeight; y++)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < minimisedWidth; x++)
                 {
-                    int index = (y * width + x) * 4;
+                    int index = (y * minimisedWidth + x) * 4;
 
-                    imageData[index + 3] = (byte)pixelsArray[y, x, 0];
-                    imageData[index + 2] = (byte)pixelsArray[y, x, 1];
-                    imageData[index + 1] = (byte)pixelsArray[y, x, 2];
-                    imageData[index] = (byte)pixelsArray[y, x, 3];
+                    imageData[index + 3] = (byte)minimisedArray[y, x, 0];
+                    imageData[index + 2] = (byte)minimisedArray[y, x, 1];
+                    imageData[index + 1] = (byte)minimisedArray[y, x, 2];
+                    imageData[index] = (byte)minimisedArray[y, x, 3];
                 }
             }
 
-            Bitmap newImage = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            BitmapData bitmapData = newImage.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            Bitmap newImage = new Bitmap(minimisedWidth, minimisedHeight, PixelFormat.Format32bppArgb);
+            BitmapData bitmapData = newImage.LockBits(new Rectangle(0, 0, minimisedWidth, minimisedHeight), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
             Marshal.Copy(imageData, 0, bitmapData.Scan0, imageData.Length);
             newImage.UnlockBits(bitmapData);
             newImage.Save(@"D:\MyImage.png", ImageFormat.Png);
         }
 
+        private void buttonSaveThreadsWay_Click(object sender, EventArgs e)
+        {
+            DateTime start = DateTime.Now;
+            image = Bitmap.FromFile(pathOfImage) as Bitmap;
+            height = image.Height;
+            width = image.Width;
+            pixelsArray = new long[height, width,4];
+            minimisedHeight = height * int.Parse(textBox2.Text) / 100;
+            minimisedWidth = width * int.Parse(textBox2.Text) / 100;
+            minimisedArray = new long[minimisedHeight, minimisedWidth, 4];
+            getDecimalARGBThreeDimensions();
+            List<Thread> workers = new();
+            for (int i = 1; i <= workersCount; i++)
+            {
+                Thread t = new Thread(MinifyArrayThreeDimensionsThreads);
+                t.Priority = ThreadPriority.Lowest;
+                t.Start(i.ToString());
+                workers.Add(t);
+            }
+            foreach (var w in workers) w.Join();
+            SaveProcessedBitmapThreeDimensions();
+            calculationTimeTxt.Text = (DateTime.Now - start).TotalSeconds.ToString();
+        }
+
+        public void MinifyArrayThreeDimensionsThreads(object quadrantNumberObj)
+        {
+            double percentage = double.Parse(textBox2.Text) / 100;
+            double divisionCount = (double)(1 / percentage);
+            int begin = 0;
+            int quadrantNumber = int.Parse((string)quadrantNumberObj);
+            if(quadrantNumber>1)
+                begin = minimisedHeight/workersCount*(quadrantNumber-1);
+            for (int i = begin; i < (double)(minimisedHeight / workersCount * quadrantNumber); i++)
+            {
+                for (int j = 0; j < minimisedWidth; j++)
+                {
+                    for (double k = i * divisionCount; k <= (i + 1) * divisionCount - 1; k++)
+                    {
+                        for (double l = j * divisionCount; l <= (j + 1) * divisionCount - 1; l++)
+                        {
+                            minimisedArray[i, j, 3] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 3];
+                            minimisedArray[i, j, 2] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 2];
+                            minimisedArray[i, j, 1] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 1];
+                            minimisedArray[i, j, 0] += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 0];
+                        }
+                    }
+                    minimisedArray[i, j, 3] /= (int)(Math.Pow(Math.Floor(divisionCount), 2));
+                    minimisedArray[i, j, 2] /= (int)(Math.Pow(Math.Floor(divisionCount), 2));
+                    minimisedArray[i, j, 1] /= (int)(Math.Pow(Math.Floor(divisionCount), 2));
+                    minimisedArray[i, j, 0] /= (int)(Math.Pow((divisionCount), 2));
+                }
+            }
+
+        }
     }
 }

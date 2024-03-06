@@ -31,10 +31,13 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.buttonImageSelect = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.buttonGenerate = new System.Windows.Forms.Button();
+            this.buttonSaveFunctionalWay = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.buttonSaveThreadsWay = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.calculationTimeTxt = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,20 +68,20 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // buttonGenerate
+            // buttonSaveFunctionalWay
             // 
-            this.buttonGenerate.Enabled = false;
-            this.buttonGenerate.Location = new System.Drawing.Point(405, 380);
-            this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(100, 29);
-            this.buttonGenerate.TabIndex = 3;
-            this.buttonGenerate.Text = "Generate";
-            this.buttonGenerate.UseVisualStyleBackColor = true;
-            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
+            this.buttonSaveFunctionalWay.Enabled = false;
+            this.buttonSaveFunctionalWay.Location = new System.Drawing.Point(401, 366);
+            this.buttonSaveFunctionalWay.Name = "buttonSaveFunctionalWay";
+            this.buttonSaveFunctionalWay.Size = new System.Drawing.Size(195, 29);
+            this.buttonSaveFunctionalWay.TabIndex = 3;
+            this.buttonSaveFunctionalWay.Text = "Save Image by Functions";
+            this.buttonSaveFunctionalWay.UseVisualStyleBackColor = true;
+            this.buttonSaveFunctionalWay.Click += new System.EventHandler(this.buttonGenerate_Click);
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(295, 380);
+            this.textBox2.Location = new System.Drawing.Point(295, 383);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 27);
             this.textBox2.TabIndex = 4;
@@ -95,21 +98,52 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(174, 383);
+            this.label2.Location = new System.Drawing.Point(174, 386);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(115, 20);
             this.label2.TabIndex = 6;
             this.label2.Text = "Minify image %:";
             // 
+            // buttonSaveThreadsWay
+            // 
+            this.buttonSaveThreadsWay.Enabled = false;
+            this.buttonSaveThreadsWay.Location = new System.Drawing.Point(401, 401);
+            this.buttonSaveThreadsWay.Name = "buttonSaveThreadsWay";
+            this.buttonSaveThreadsWay.Size = new System.Drawing.Size(195, 29);
+            this.buttonSaveThreadsWay.TabIndex = 7;
+            this.buttonSaveThreadsWay.Text = "Save Image by Threads";
+            this.buttonSaveThreadsWay.UseVisualStyleBackColor = true;
+            this.buttonSaveThreadsWay.Click += new System.EventHandler(this.buttonSaveThreadsWay_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(205, 448);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(190, 20);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Time for Whole Calculation";
+            // 
+            // calculationTimeTxt
+            // 
+            this.calculationTimeTxt.Enabled = false;
+            this.calculationTimeTxt.Location = new System.Drawing.Point(401, 445);
+            this.calculationTimeTxt.Name = "calculationTimeTxt";
+            this.calculationTimeTxt.Size = new System.Drawing.Size(195, 27);
+            this.calculationTimeTxt.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(782, 453);
+            this.ClientSize = new System.Drawing.Size(782, 482);
+            this.Controls.Add(this.calculationTimeTxt);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.buttonSaveThreadsWay);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.buttonGenerate);
+            this.Controls.Add(this.buttonSaveFunctionalWay);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.buttonImageSelect);
             this.Controls.Add(this.textBox1);
@@ -127,9 +161,12 @@
         private TextBox textBox1;
         private Button buttonImageSelect;
         private PictureBox pictureBox1;
-        private Button buttonGenerate;
+        private Button buttonSaveFunctionalWay;
         private TextBox textBox2;
         private Label label1;
         private Label label2;
+        private Button buttonSaveThreadsWay;
+        private Label label3;
+        private TextBox calculationTimeTxt;
     }
 }
