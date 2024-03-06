@@ -127,20 +127,115 @@ namespace ResizeAnImage
             Bitmap foo = Bitmap.FromFile(pathOfImage) as Bitmap;
             int height = foo.Height;
             int width = foo.Width;
-            long[,] pixelsArray = new long[height, width];
-           // getDecimalRGB(pixelsArray, foo);
-            getDecimalARGB(pixelsArray, foo);
+            long[,,] pixelsArray = new long[height, width,4];
+            // getDecimalRGB(pixelsArray, foo);
+            getDecimalARGBThreeDimensions(pixelsArray, foo);
             int minimisedHeight = height * int.Parse(textBox2.Text) / 100;
             int minimisedWidth = width * int.Parse(textBox2.Text) / 100;
-            long[,] mimimisedArray = new long[minimisedHeight, minimisedWidth];
+            long[,,] mimimisedArray = new long[minimisedHeight, minimisedWidth,4];
             //createPicture(pixelsArray, foo.Width, foo.Height);
             //MinifyArray(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth,height, width);
             //createPicture(mimimisedArray, minimisedWidth, minimisedHeight);
             //MinifyAAAArray(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth, height, width);
             //createAAAPicture(mimimisedArray, minimisedWidth, minimisedHeight);
-            MinifyAArray(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth, height, width);
-            SaveProcessedBitmap(mimimisedArray, minimisedWidth, minimisedHeight);
+                //MinifyAArray(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth, height, width);
+                //SaveProcessedBitmap(mimimisedArray, minimisedWidth, minimisedHeight);
+                MinifyArrayThreeDimensions(mimimisedArray, pixelsArray, minimisedHeight, minimisedWidth, height, width);
+            SaveProcessedBitmapThreeDimensions(mimimisedArray, minimisedWidth, minimisedHeight);
         }
+
+        static void getDecimalARGBThreeDimensions(long[,,] pixelsArray, Bitmap image)
+        {
+            const int PixelWidth = 4;
+            const PixelFormat PixelFormat = PixelFormat.Format32bppArgb;
+
+            BitmapData data = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, PixelFormat);
+            try
+            {
+                byte[] pixelData = new byte[data.Stride];
+                for (int scanline = 0; scanline < data.Height; scanline++)
+                {
+                    Marshal.Copy(data.Scan0 + (scanline * data.Stride), pixelData, 0, data.Stride);
+                    for (int pixeloffset = 0; pixeloffset < data.Width; pixeloffset++)
+                    {
+                        int offset = pixeloffset * PixelWidth;
+                        pixelsArray[scanline, pixeloffset, 3] = pixelData[offset];//B
+                        pixelsArray[scanline, pixeloffset, 2] = pixelData[offset + 1];//G
+                        pixelsArray[scanline, pixeloffset, 1] = pixelData[offset + 2];//R
+                        pixelsArray[scanline, pixeloffset, 0] = pixelData[offset + 3];//A
+                    }
+                }
+            }
+            finally
+            {
+                image.UnlockBits(data);
+            }
+
+        }
+
+        public void MinifyArrayThreeDimensions(long[,,] mimimisedArray, long[,,] pixelsArray, int height, int width, int pixelHeight, int pixelWidth)
+        {
+            double percentage = double.Parse(textBox2.Text) / 100;
+            double divisionCount = (double)(1 / percentage);
+            decimal avgAlfa = 0;
+            decimal avgRed = 0;
+            decimal avgGreen = 0;
+            decimal avgBlue = 0;
+            decimal avgDecColor = 0;
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    for (double k = i * divisionCount; k <= (i + 1) * divisionCount - 1; k++)
+                    {
+                        for (double l = j * divisionCount; l <= (j + 1) * divisionCount - 1; l++)
+                        {
+                            avgBlue += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 3];
+                            avgGreen += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 2];
+                            avgRed += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 1];
+                            avgAlfa += pixelsArray[(int)Math.Ceiling(k), (int)Math.Ceiling(l), 0];
+                        }
+                    }
+                    mimimisedArray[i, j, 3] = (int)(avgBlue / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
+                    mimimisedArray[i, j, 2] = (int)(avgGreen / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
+                    mimimisedArray[i, j, 1] = (int)(avgRed / (int)(Math.Pow(Math.Floor(divisionCount), 2)));
+                    mimimisedArray[i, j, 0] = (int)(avgAlfa / (int)(Math.Pow((divisionCount), 2)));
+
+                    avgAlfa = 0;
+                    avgBlue = 0;
+                    avgGreen = 0;
+                    avgRed = 0;
+                }
+            }
+
+        }
+
+        private void SaveProcessedBitmapThreeDimensions(long[,,] pixelsArray, int width, int height)
+        {
+            byte[] imageData = new byte[width * height * 4];
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    int index = (y * width + x) * 4;
+
+                    imageData[index + 3] = (byte)pixelsArray[y, x, 0];
+                    imageData[index + 2] = (byte)pixelsArray[y, x, 1];
+                    imageData[index + 1] = (byte)pixelsArray[y, x, 2];
+                    imageData[index] = (byte)pixelsArray[y, x, 3];
+                }
+            }
+
+            Bitmap newImage = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            BitmapData bitmapData = newImage.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+            Marshal.Copy(imageData, 0, bitmapData.Scan0, imageData.Length);
+            newImage.UnlockBits(bitmapData);
+            newImage.Save(@"D:\MyImage.png", ImageFormat.Png);
+        }
+
         static void getDecimalARGB(long[,] pixelsArray, Bitmap image)
         {
             const int PixelWidth = 4;
@@ -172,6 +267,8 @@ namespace ResizeAnImage
             }
             
         }
+
+
         public void MinifyAAAArray(long[,] mimimisedArray, long[,] pixelsArray, int height, int width, int pixelHeight, int pixelWidth)
         {
             double percentage = double.Parse(textBox2.Text) / 100;
